@@ -19,14 +19,16 @@ export class LoggerInerceptor implements NestInterceptor {
     const logger = new Logger(LoggerInerceptor.name);
 
     const request = context.switchToHttp().getRequest();
-    // const userAgent = request.get('user-agent') || 'user-agent: unknown';
-    const { method, path, ip } = request;
+
+    const { method, path: url } = request;
     const className = context.getClass().name;
     const handlerName = context.getHandler().name;
 
     logger.verbose(
-      `${method} ${path} | Ip: ${ip} Context: ${className} Handler: ${handlerName} invoked... `,
+      `${method} ${url} | Context: ${className} Handler: ${handlerName} invoked... `,
     );
+    logger.debug('Request Body:', request.body);
+    logger.debug('Request Header:', request.headers);
 
     const now = Date.now();
 
@@ -36,7 +38,7 @@ export class LoggerInerceptor implements NestInterceptor {
         const { statusCode } = response;
         const contentLength = response.get('content-length');
         Logger.log(
-          `${method} ${path} ${statusCode} | Content Length: ${contentLength} - ip: ${ip} Time: ${Date.now() - now}ms`,
+          `${method} ${url} ${statusCode} | Content Length: ${contentLength} | Execution Time:: ${Date.now() - now}ms`,
         );
 
         logger.debug('Response:', res);
