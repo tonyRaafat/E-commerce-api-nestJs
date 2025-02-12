@@ -1,10 +1,10 @@
+import { ConfigModule } from '@nestjs/config';
 import { Module, Scope } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SentryGlobalFilter, SentryModule } from '@sentry/nestjs/setup';
 import { UsersModule } from './users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggerInerceptor } from './interceptors/logger.interceptor';
 
@@ -17,11 +17,11 @@ import { LoggerInerceptor } from './interceptors/logger.interceptor';
   ],
   controllers: [AppController],
   providers: [
-    AppService,
     {
       provide: APP_FILTER,
       useClass: SentryGlobalFilter,
     },
+    AppService,
     {
       provide: APP_INTERCEPTOR,
       scope: Scope.REQUEST,
