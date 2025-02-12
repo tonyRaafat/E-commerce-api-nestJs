@@ -9,4 +9,9 @@ export class AppController {
   getError(): string {
     throw new Error('this is a test error to test sentry');
   }
+
+  @Get()
+  getHello(): string {
+    return this.appService.getHello();
+  }
 }
