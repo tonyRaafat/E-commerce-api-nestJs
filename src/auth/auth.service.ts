@@ -54,4 +54,9 @@ export class AuthService {
       expires: new Date(Date.now() + 3600000),
     });
   }
+
+  logout(response: Response) {
+    response.clearCookie('Authorization');
+    return { msg: 'logged out succesfuly' };
+  }
 }

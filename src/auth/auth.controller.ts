@@ -19,6 +19,11 @@ export class AuthController {
     return this.authService.login(user, res);
   }
 
+  @Post('logout')
+  logout(@Res({ passthrough: true }) response: Response) {
+    return this.authService.logout(response);
+  }
+
   @Get('cookie-check')
   cookieCheck(@Req() request: Request) {
     return request.headers.cookie;
