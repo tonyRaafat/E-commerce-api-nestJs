@@ -7,6 +7,7 @@ import {
   Logger,
   NestInterceptor,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { Observable, tap } from 'rxjs';
 
 @Injectable()
@@ -18,7 +19,7 @@ export class LoggerInerceptor implements NestInterceptor {
   ): Observable<any> | Promise<Observable<any>> {
     const logger = new Logger(LoggerInerceptor.name);
 
-    const request = context.switchToHttp().getRequest();
+    const request: Request = context.switchToHttp().getRequest();
 
     const { method, path: url } = request;
     const className = context.getClass().name;
@@ -40,7 +41,6 @@ export class LoggerInerceptor implements NestInterceptor {
         Logger.log(
           `${method} ${url} ${statusCode} | Content Length: ${contentLength} | Execution Time:: ${Date.now() - now}ms`,
         );
-
         logger.debug('Response:', res);
       }),
     );

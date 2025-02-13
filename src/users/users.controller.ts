@@ -6,22 +6,33 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto, Role } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { currentUser } from 'src/auth/decorators/currentUser.decorator';
+import { User } from './entities/user.entity';
+import { JwtAuthGaurd } from 'src/auth/guards/jwtAuth.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { RolesGuard } from 'src/auth/guards/roles/roles.guard';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
+  @Post('signup')
   create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+    return this.usersService.signup(createUserDto);
   }
 
+  @Roles(Role.admin)
+  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGaurd)
   @Get()
-  findAll() {
+  findAll(@currentUser() user: User) {
+    console.log('user in findall: ' + user.email);
+
     return this.usersService.findAll();
   }
 
