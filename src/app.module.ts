@@ -8,6 +8,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggerInerceptor } from './interceptors/logger.interceptor';
 import { AuthModule } from './auth/auth.module';
+import { ProductsModule } from './products/products.module';
+import { CategoriesModule } from './categories/categories.module';
+import { OrdersModule } from './orders/orders.module';
 import config from './config/config';
 
 @Module({
@@ -22,6 +25,9 @@ import config from './config/config';
     SentryModule.forRoot(),
     UsersModule,
     AuthModule,
+    ProductsModule,
+    CategoriesModule,
+    OrdersModule,
   ],
   controllers: [AppController],
   providers: [

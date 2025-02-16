@@ -23,6 +23,18 @@ export abstract class EntityRepository<T extends Document> {
       .exec();
   }
 
+  async findOneAndPopulate(
+    filterQuery: FilterQuery<T>,
+    projection?: Record<string, unknown>,
+  ): Promise<T | null> {
+    return this.entityModel
+      .findOne(filterQuery, {
+        __v: 0,
+        ...projection,
+      })
+      .exec();
+  }
+
   async find(
     filterQuery: FilterQuery<T>,
     projection?: Record<string, unknown>,
