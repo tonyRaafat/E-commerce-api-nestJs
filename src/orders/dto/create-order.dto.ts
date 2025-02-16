@@ -2,6 +2,7 @@ import {
   IsArray,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   Min,
   ValidateNested,
@@ -40,10 +41,6 @@ export class CreateOrderDto {
         product: '507f1f77bcf86cd799439011',
         quantity: 2,
       },
-      {
-        product: '507f1f77bcf86cd799439012',
-        quantity: 1,
-      },
     ],
   })
   @IsArray()
@@ -51,4 +48,34 @@ export class CreateOrderDto {
   @Type(() => OrderItemDto)
   @IsNotEmpty()
   items: OrderItemDto[];
+
+  @ApiProperty({
+    description: 'Coupon code to apply discount to the order',
+    example: 'SUMMER2023',
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  couponCode?: string;
+
+  @ApiProperty({
+    description: 'Shipping address for the order',
+    example: '123 Main St, City, Country',
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  shippingAddress?: string;
+
+  @ApiProperty({
+    description: 'Additional notes for the order',
+    example: 'Please deliver after 6 PM',
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  notes?: string;
 }

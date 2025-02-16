@@ -1,28 +1,30 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, QueryOptions } from 'mongoose';
-import { EntityRepository } from 'src/database/entity.repository';
+import { Model } from 'mongoose';
+import { EntityRepository } from '../database/entity.repository';
 import { Order, OrderDocument } from './entities/order.entity';
 
 @Injectable()
 export class OrderRepository extends EntityRepository<OrderDocument> {
   constructor(
-    @InjectModel(Order.name) readonly orderModel: Model<OrderDocument>,
+    @InjectModel(Order.name) private readonly orderModel: Model<OrderDocument>,
   ) {
     super(orderModel);
   }
 
-  findOrdersHistory(query: QueryOptions<OrderDocument>) {
+  async findOrdersHistory(filter = {}) {
     return this.orderModel
-      .find(query)
+      .find(filter)
       .populate('user', 'name email')
-      .populate('items.product', 'name price');
+      .populate('items.product', 'name price')
+      .exec();
   }
 
-  findOneOrdersHistory(query: QueryOptions<OrderDocument>) {
+  async findOneOrdersHistory(filter = {}) {
     return this.orderModel
-      .findOne(query)
+      .findOne(filter)
       .populate('user', 'name email')
-      .populate('items.product', 'name price');
+      .populate('items.product', 'name price')
+      .exec();
   }
 }

@@ -11,35 +11,15 @@ export abstract class EntityRepository<T extends Document> {
     return this.entityModel.findById(id, projection, options).exec();
   }
 
-  async findOne(
-    filterQuery: FilterQuery<T>,
-    projection?: Record<string, unknown>,
-  ): Promise<T | null> {
-    return this.entityModel
-      .findOne(filterQuery, {
-        __v: 0,
-        ...projection,
-      })
-      .exec();
+  findOne(filterQuery: FilterQuery<T>, projection?: Record<string, unknown>) {
+    return this.entityModel.findOne(filterQuery, {
+      __v: 0,
+      ...projection,
+    });
   }
 
-  async findOneAndPopulate(
-    filterQuery: FilterQuery<T>,
-    projection?: Record<string, unknown>,
-  ): Promise<T | null> {
-    return this.entityModel
-      .findOne(filterQuery, {
-        __v: 0,
-        ...projection,
-      })
-      .exec();
-  }
-
-  async find(
-    filterQuery: FilterQuery<T>,
-    projection?: Record<string, unknown>,
-  ): Promise<T[] | null> {
-    return this.entityModel.find(filterQuery, projection).exec();
+  find(filterQuery: FilterQuery<T>, projection?: Record<string, unknown>) {
+    return this.entityModel.find(filterQuery, projection);
   }
 
   async create(createEntityModel: unknown): Promise<T | T[]> {

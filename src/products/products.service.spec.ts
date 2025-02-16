@@ -6,6 +6,7 @@ describe('ProductsService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [],
       providers: [ProductsService],
     }).compile();
 

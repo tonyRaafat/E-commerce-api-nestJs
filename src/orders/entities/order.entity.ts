@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { SchemaTypes, Types } from 'mongoose';
+import { OrderStatus } from '../dto/update-order.dto';
 
 export type OrderDocument = Order & Document;
 
@@ -27,8 +28,8 @@ export class Order {
   @Prop({ required: true })
   totalAmount: number;
 
-  @Prop({ default: 'pending', enum: ['pending', 'completed', 'cancelled'] })
-  status: string;
+  @Prop({ default: OrderStatus.PENDING, enum: Object.values(OrderStatus) })
+  status: OrderStatus;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

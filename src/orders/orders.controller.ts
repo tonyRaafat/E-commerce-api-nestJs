@@ -11,9 +11,9 @@ import {
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { JwtAuthGaurd } from 'src/auth/guards/jwtAuth.guard';
-import { currentUser } from 'src/auth/decorators/currentUser.decorator';
-import { User } from 'src/users/entities/user.entity';
+import { JwtAuthGaurd } from '../auth/guards/jwtAuth.guard';
+import { currentUser } from '../auth/decorators/currentUser.decorator';
+import { User } from '../users/entities/user.entity';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Orders')

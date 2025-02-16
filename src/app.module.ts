@@ -11,6 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import { ProductsModule } from './products/products.module';
 import { CategoriesModule } from './categories/categories.module';
 import { OrdersModule } from './orders/orders.module';
+import { CopounsModule } from './copouns/copouns.module';
 import config from './config/config';
 
 @Module({
@@ -28,6 +29,7 @@ import config from './config/config';
     ProductsModule,
     CategoriesModule,
     OrdersModule,
+    CopounsModule,
   ],
   controllers: [AppController],
   providers: [

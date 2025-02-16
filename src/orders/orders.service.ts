@@ -6,14 +6,16 @@ import {
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { OrderRepository } from './orders.repository';
-import { ProductRepository } from 'src/products/products.repository';
-import { User } from 'src/users/entities/user.entity';
+import { ProductRepository } from '../products/products.repository';
+import { User } from '../users/entities/user.entity';
+import { CopounsService } from '../copouns/copouns.service';
 
 @Injectable()
 export class OrdersService {
   constructor(
     private orderRepository: OrderRepository,
     private productRepository: ProductRepository,
+    private couponService: CopounsService,
   ) {}
 
   async create(createOrderDto: CreateOrderDto, user: User) {
@@ -56,10 +58,19 @@ export class OrdersService {
       totalAmount += product.price * item.quantity;
     }
 
+    let finalAmount = totalAmount;
+    if (createOrderDto.couponCode) {
+      const coupon = await this.couponService.validateCoupon(
+        createOrderDto.couponCode,
+      );
+      finalAmount = totalAmount * (1 - coupon.discountPercentage / 100);
+    }
+
     const order = await this.orderRepository.create({
       user: user._id,
       items: orderItems,
-      totalAmount,
+      totalAmount: finalAmount,
+      couponCode: createOrderDto.couponCode,
       status: 'pending',
     });
 
@@ -98,7 +109,6 @@ export class OrdersService {
       const order = await this.orderRepository.findOneAndUpdate(
         { _id: id, user: user._id },
         updateOrderDto,
-        { new: true },
       );
 
       if (!order) {
