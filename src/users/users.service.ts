@@ -9,15 +9,51 @@ import {
   NotFoundException,
   ConflictException,
   BadRequestException,
+  Logger,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Cron, CronExpression } from '@nestjs/schedule';
+import { OrderRepository } from '../orders/orders.repository';
 
 @Injectable()
 export class UsersService {
+  private readonly logger = new Logger(UsersService.name);
+
   constructor(
     private userRepository: UserRepository,
+    private orderRepository: OrderRepository,
     private configService: ConfigService,
   ) {}
+
+  @Cron(CronExpression.EVERY_MINUTE)
+  async logUserOrderStatistics() {
+    try {
+      const users = await this.userRepository.find({});
+      const userStats: { email: string; name: string; orderCount: number }[] =
+        [];
+
+      for (const user of users) {
+        const orderCount = await this.orderRepository.count({ user: user._id });
+        userStats.push({
+          email: user.email,
+          name: user.name,
+          orderCount,
+        });
+      }
+
+      // Sort by order count in descending order
+      userStats.sort((a, b) => b.orderCount - a.orderCount);
+
+      this.logger.log('User Order Statistics:');
+      userStats.forEach((stat) => {
+        this.logger.log(
+          `User: ${stat.name} (${stat.email}) - Orders: ${stat.orderCount}`,
+        );
+      });
+    } catch (error) {
+      this.logger.error('Failed to log user order statistics', error);
+    }
+  }
 
   async signup(createUserDto: CreateUserDto) {
     try {

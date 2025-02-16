@@ -27,4 +27,8 @@ export class OrderRepository extends EntityRepository<OrderDocument> {
       .populate('items.product', 'name price')
       .exec();
   }
+
+  count(filter = {}): any {
+    return this.orderModel.countDocuments(filter).exec();
+  }
 }
