@@ -31,18 +31,17 @@ export abstract class MockModel<T> {
     return this;
   }
 
-  // Delete methods
-  deleteMany(filterQuery?: any): Promise<{ deletedCount: number }> {
-    return Promise.resolve({ deletedCount: 1 });
-  }
-
   // Creation methods
   insertMany(entities: T[]): Promise<T[]> {
     return Promise.resolve(entities);
   }
 
-  save(): Promise<T> {
-    return Promise.resolve(this.entityStub);
+  insertOne(entity: T): Promise<T> {
+    return Promise.resolve(entity);
+  }
+
+  deleteMany(filterQuery: any): Promise<{ deletedCount: number }> {
+    return Promise.resolve({ deletedCount: 1 });
   }
 
   // Execution and projection

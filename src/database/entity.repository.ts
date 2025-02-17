@@ -26,8 +26,7 @@ export abstract class EntityRepository<T extends Document> {
     if (Array.isArray(createEntityModel)) {
       return this.entityModel.insertMany(createEntityModel);
     } else {
-      const entity = new this.entityModel(createEntityModel);
-      return entity.save();
+      return this.entityModel.insertOne(createEntityModel);
     }
   }
 
@@ -42,7 +41,7 @@ export abstract class EntityRepository<T extends Document> {
   }
 
   async deleteMany(filterQuery: FilterQuery<T>): Promise<boolean> {
-    const res = await this.entityModel.deleteMany(filterQuery).exec();
+    const res = await this.entityModel.deleteMany(filterQuery);
     return res.deletedCount >= 1;
   }
 }

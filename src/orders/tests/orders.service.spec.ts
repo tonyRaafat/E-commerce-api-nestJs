@@ -7,6 +7,7 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { orderStub } from './stubs/order.stub';
 import { Types } from 'mongoose';
 import { OrderStatus } from '../dto/update-order.dto';
+import { CopounsService } from '../../copouns/copouns.service';
 
 describe('OrdersService', () => {
   let service: OrdersService;
@@ -26,6 +27,10 @@ describe('OrdersService', () => {
     findOneAndUpdate: jest.fn(),
   };
 
+  const mockCouponService = {
+    validateCoupon: jest.fn(),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [],
@@ -38,6 +43,10 @@ describe('OrdersService', () => {
         {
           provide: ProductRepository,
           useValue: mockProductRepository,
+        },
+        {
+          provide: CopounsService,
+          useValue: mockCouponService,
         },
       ],
     }).compile();
