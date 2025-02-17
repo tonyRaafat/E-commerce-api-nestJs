@@ -13,6 +13,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { OrdersModule } from './orders/orders.module';
 import { CopounsModule } from './copouns/copouns.module';
 import config from './config/config';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -22,6 +23,12 @@ import config from './config/config';
         uri: configService.get('MONGODB_URI'),
       }),
       inject: [ConfigService],
+    }),
+    CacheModule.register({
+      isGlobal: true,
+      // host: 'localhost',
+      // port: 6379,
+      ttl: 120,
     }),
     SentryModule.forRoot(),
     UsersModule,
