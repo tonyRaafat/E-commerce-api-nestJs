@@ -27,7 +27,6 @@ export class OrdersService {
     const orderItems: OrderItem[] = [];
     let totalAmount = 0;
 
-    // Validate and process each order item
     for (const item of createOrderDto.items) {
       const product = await this.productRepository.findOne({
         _id: item.product,

@@ -58,7 +58,6 @@ export class ProductsService {
       }
 
       this.logger.debug('Cache MISS - findAll products');
-      // If not in cache, get from database and cache it
       const products = await this.productRepository.find(
         { isActive: true },
         { __v: 0 },
@@ -127,7 +126,6 @@ export class ProductsService {
       { _id: id },
       { isActive: false },
     );
-    // Invalidate caches
     await Promise.all([
       this.cacheManager.del(CACHE_KEYS.ALL_PRODUCTS),
       this.cacheManager.del(CACHE_KEYS.PRODUCT_BY_ID(id)),
@@ -142,7 +140,6 @@ export class ProductsService {
     const orders = await this.orderRepository.findOrdersHistory();
     const productOrderCount = new Map<string, number>();
 
-    // Count orders for each product
     orders.forEach((order) => {
       order.items.forEach((item) => {
         const productId = item.product._id.toString();
@@ -153,7 +150,6 @@ export class ProductsService {
       });
     });
 
-    // Get all products and sort them by order count
     const products = await this.productRepository.find({ isActive: true });
     const sortedProducts = products.sort((a, b) => {
       const aCount = productOrderCount.get(a._id.toString()) || 0;

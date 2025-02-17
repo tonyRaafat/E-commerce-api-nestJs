@@ -25,7 +25,7 @@ export class CreateCopounDto {
 
   @ApiProperty({
     description: 'Coupon expiry date',
-    example: '2024-12-31T23:59:59Z',
+    example: '2025-12-31T23:59:59Z',
     type: Date,
   })
   @Type(() => Date)

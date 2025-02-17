@@ -41,7 +41,6 @@ export class UsersService {
         });
       }
 
-      // Sort by order count in descending order
       userStats.sort((a, b) => b.orderCount - a.orderCount);
 
       this.logger.log('User Order Statistics:');
@@ -57,7 +56,6 @@ export class UsersService {
 
   async signup(createUserDto: CreateUserDto) {
     try {
-      // Check if user already exists
       const existingUser = await this.userRepository.findOne({
         email: createUserDto.email,
       });
@@ -125,13 +123,11 @@ export class UsersService {
 
   async update(id: string, updateUserDto: UpdateUserDto) {
     try {
-      // Check if user exists
       const existingUser = await this.userRepository.findOne({ _id: id });
       if (!existingUser) {
         throw new NotFoundException('User not found');
       }
 
-      // If updating password, hash it
       if (updateUserDto.password) {
         const salt: number = Number(this.configService.getOrThrow('SALT'));
         updateUserDto.password = await HashUtil.hashPassword(
