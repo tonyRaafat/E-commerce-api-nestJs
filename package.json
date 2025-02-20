@@ -37,6 +37,8 @@
     "@sentry/nestjs": "^9.0.1",
     "@sentry/profiling-node": "^9.0.1",
     "@types/cache-manager": "^5.0.0",
+    "amqp-connection-manager": "^4.1.14",
+    "amqplib": "^0.10.5",
     "bcrypt": "^5.1.1",
     "cache-manager": "^6.4.0",
     "cache-manager-redis-store": "^3.0.1",

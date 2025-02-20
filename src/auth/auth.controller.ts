@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { currentUser } from './decorators/currentUser.decorator';
-import { User } from 'src/users/entities/user.entity';
+import { User } from '../users/entities/user.entity';
 import { Request, Response } from 'express';
 import { LocalAuthGaurd } from './guards/localAuth.guard';
 import { ApiBody, ApiCookieAuth } from '@nestjs/swagger';

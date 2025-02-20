@@ -12,10 +12,10 @@ import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { RolesGuard } from 'src/auth/guards/roles/roles.guard';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { Role } from 'src/users/dto/create-user.dto';
-import { JwtAuthGaurd } from 'src/auth/guards/jwtAuth.guard';
+import { RolesGuard } from '../auth/guards/roles/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Role } from '../users/dto/create-user.dto';
+import { JwtAuthGaurd } from '../auth/guards/jwtAuth.guard';
 
 @ApiTags('categories')
 @Controller('categories')

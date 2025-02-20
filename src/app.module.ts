@@ -14,6 +14,7 @@ import { OrdersModule } from './orders/orders.module';
 import { CopounsModule } from './copouns/copouns.module';
 import config from './config/config';
 import { CacheModule } from '@nestjs/cache-manager';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { CacheModule } from '@nestjs/cache-manager';
     CategoriesModule,
     OrdersModule,
     CopounsModule,
+    DatabaseModule,
   ],
   controllers: [AppController],
   providers: [

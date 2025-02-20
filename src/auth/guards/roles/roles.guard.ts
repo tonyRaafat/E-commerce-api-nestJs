@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { Observable } from 'rxjs';
-import { ROLE_KEY } from 'src/auth/decorators/roles.decorator';
-import { User } from 'src/users/entities/user.entity';
+import { ROLE_KEY } from '../../../auth/decorators/roles.decorator';
+import { User } from '../../../users/entities/user.entity';
 
 @Injectable()
 export class RolesGuard implements CanActivate {

@@ -12,10 +12,10 @@ import {
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { JwtAuthGaurd } from 'src/auth/guards/jwtAuth.guard';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { Role } from 'src/users/dto/create-user.dto';
-import { RolesGuard } from 'src/auth/guards/roles/roles.guard';
+import { JwtAuthGaurd } from '../auth/guards/jwtAuth.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Role } from '../users/dto/create-user.dto';
+import { RolesGuard } from '../auth/guards/roles/roles.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CacheInterceptor } from '@nestjs/cache-manager';
 
@@ -31,6 +31,11 @@ export class ProductsController {
   @UseGuards(JwtAuthGaurd)
   create(@Body() createProductDto: CreateProductDto) {
     return this.productsService.create(createProductDto);
+  }
+
+  @Get('/hello')
+  getHello() {
+    return this.productsService.getHello();
   }
 
   @Get()

@@ -11,13 +11,15 @@ import {
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductRepository } from './products.repository';
-import { CategoryRepository } from 'src/categories/categories.repository';
+import { CategoryRepository } from '../categories/categories.repository';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { OrderRepository } from 'src/orders/orders.repository';
+import { OrderRepository } from '../orders/orders.repository';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 type CacheType = Cache;
 import { CACHE_KEYS } from './products.constants';
+import { ClientProxy } from '@nestjs/microservices';
+import { timeout } from 'rxjs';
 
 @Injectable()
 export class ProductsService {
@@ -28,7 +30,12 @@ export class ProductsService {
     @Inject(forwardRef(() => OrderRepository))
     private orderRepository: OrderRepository,
     @Inject(CACHE_MANAGER) private cacheManager: CacheType,
+    @Inject('ORDERS_SERVICE') private rabbitMq: ClientProxy,
   ) {}
+
+  getHello() {
+    return this.rabbitMq.send({ cmd: 'hello' }, {}).pipe(timeout(5000));
+  }
 
   async create(createProductDto: CreateProductDto) {
     const category = await this.categoryRepository.findOne({
@@ -38,46 +45,14 @@ export class ProductsService {
       throw new BadRequestException('Category not found');
     }
     const product = await this.productRepository.create(createProductDto);
+    this.rabbitMq.send({ emit: 'create_doc' }, product);
     await this.cacheManager.del(CACHE_KEYS.ALL_PRODUCTS);
     return product;
   }
 
-  async findAll() {
-    try {
-      const testt = await this.cacheManager.get('test');
-      this.logger.debug(testt);
-      await this.cacheManager.set('test', 'test', 120);
-      const test = await this.cacheManager.get('test');
-      this.logger.debug(test);
-      const cachedProducts = await this.cacheManager.get(
-        CACHE_KEYS.ALL_PRODUCTS,
-      );
-      if (cachedProducts) {
-        this.logger.debug('Cache HIT - findAll products');
-        return JSON.parse(cachedProducts as string);
-      }
-
-      this.logger.debug('Cache MISS - findAll products');
-      const products = await this.productRepository.find(
-        { isActive: true },
-        { __v: 0 },
-      );
-
-      const serializedProducts = JSON.stringify(
-        products.map((product) => product.toJSON()),
-      );
-
-      await this.cacheManager.set(
-        CACHE_KEYS.ALL_PRODUCTS,
-        serializedProducts,
-        120,
-      );
-
-      return products;
-    } catch (error) {
-      this.logger.error(`Cache error: ${error.message}`);
-      return this.productRepository.find({ isActive: true }, { __v: 0 });
-    }
+  findAll() {
+    const products = this.rabbitMq.send({ cmd: 'find_all_docs' }, {});
+    return products;
   }
 
   async findOne(id: string) {

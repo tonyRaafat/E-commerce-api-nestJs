@@ -1,8 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserRepository } from 'src/users/users.repository';
-import { HashUtil } from 'src/utils/hash.util';
+import { UserRepository } from '../users/users.repository';
+import { HashUtil } from '../utils/hash.util';
 import { JwtService } from '@nestjs/jwt';
-import { User } from 'src/users/entities/user.entity';
+import { User } from '../users/entities/user.entity';
 import { TokenPayload } from './interfaces/tokenPayload.interface';
 import { Response } from 'express';
 import { ConfigService } from '@nestjs/config';

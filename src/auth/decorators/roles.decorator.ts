@@ -1,5 +1,5 @@
 import { SetMetadata } from '@nestjs/common';
-import { Role } from 'src/users/dto/create-user.dto';
+import { Role } from '../../users/dto/create-user.dto';
 
 export const ROLE_KEY = 'roles';
 export const Roles = (...roles: [Role, ...Role[]]) =>

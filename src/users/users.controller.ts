@@ -11,11 +11,11 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto, Role } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { currentUser } from 'src/auth/decorators/currentUser.decorator';
+import { currentUser } from '../auth/decorators/currentUser.decorator';
 import { User } from './entities/user.entity';
-import { JwtAuthGaurd } from 'src/auth/guards/jwtAuth.guard';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { RolesGuard } from 'src/auth/guards/roles/roles.guard';
+import { JwtAuthGaurd } from '../auth/guards/jwtAuth.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { RolesGuard } from '../auth/guards/roles/roles.guard';
 
 @Controller('users')
 export class UsersController {
